@@ -149,7 +149,7 @@ function Dashboard() {
             </div>
           ) : (
             mine.map((order) => (
-              <Link key={order.id} href={`/account/orders/${order.id}`} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-card p-4">
+              <Link key={order.id} href={`/account/order?id=${encodeURIComponent(order.id)}`} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-card p-4">
                 <span>
                   <span className="block font-medium">{order.id}</span>
                   <span className="text-sm text-muted">{formatDate(order.createdAt)}</span>

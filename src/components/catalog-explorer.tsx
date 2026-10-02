@@ -7,16 +7,28 @@ import { ProductCard } from "@/components/product-card";
 import { fieldClass } from "@/components/field";
 import { IconClose } from "@/components/icons";
 import { useDebounce } from "@/hooks/use-debounce";
-import { SORT_OPTIONS, paginate, toSearchParams, type CatalogQuery } from "@/lib/catalog";
+import { SORT_OPTIONS, paginate, parseCatalogQuery, toSearchParams, type CatalogQuery, type IncomingSearch } from "@/lib/catalog";
 import { categoryLabel } from "@/lib/products";
 import { plural } from "@/lib/format";
 import type { Product } from "@/lib/types";
 
-export function CatalogExplorer({ products, initialQuery }: { products: Product[]; initialQuery: CatalogQuery }) {
+const emptyQuery: CatalogQuery = { q: "", category: "", brands: [], min: null, max: null, rating: 0, sort: "popular", page: 1 };
+
+function queryFromLocation(): CatalogQuery {
+  const params = new URLSearchParams(window.location.search);
+  const incoming: IncomingSearch = {};
+  for (const key of new Set(params.keys())) {
+    const all = params.getAll(key);
+    incoming[key] = all.length > 1 ? all : (all[0] ?? "");
+  }
+  return parseCatalogQuery(incoming);
+}
+
+export function CatalogExplorer({ products }: { products: Product[] }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [query, setQuery] = useState(initialQuery);
-  const [searchText, setSearchText] = useState(initialQuery.q);
+  const [query, setQuery] = useState(emptyQuery);
+  const [searchText, setSearchText] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const debouncedSearch = useDebounce(searchText, 350);
   const debouncedQuery = useDebounce(query, 200);
@@ -29,6 +41,15 @@ export function CatalogExplorer({ products, initialQuery }: { products: Product[
   }, [debouncedSearch]);
 
   useEffect(() => {
+    if (origin.current === "url" && lastHref.current === null) {
+      const fromUrl = queryFromLocation();
+      lastHref.current = toSearchParams(fromUrl);
+      if (fromUrl.q || fromUrl.category || fromUrl.brands.length || fromUrl.min != null || fromUrl.max != null || fromUrl.rating || fromUrl.sort !== "popular" || fromUrl.page > 1) {
+        setSearchText(fromUrl.q);
+        setQuery(fromUrl);
+        return;
+      }
+    }
     const href = toSearchParams(debouncedQuery);
     if (lastHref.current === href) return;
     lastHref.current = href;

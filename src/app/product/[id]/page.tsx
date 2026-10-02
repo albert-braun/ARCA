@@ -28,8 +28,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600;
-
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;
   const product = await getProduct(Number(id));

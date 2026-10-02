@@ -77,7 +77,7 @@ function withExtras(products: Product[]) {
 
 export async function getProducts(): Promise<Product[]> {
   try {
-    const response = await fetch(SOURCE, { next: { revalidate: 3600 } });
+    const response = await fetch(SOURCE, process.env.GITHUB_PAGES === "true" ? { cache: "force-cache" } : { next: { revalidate: 3600 } });
     if (!response.ok) throw new Error(`FakeStoreAPI ${response.status}`);
     return withExtras(fromList(await response.json()));
   } catch {

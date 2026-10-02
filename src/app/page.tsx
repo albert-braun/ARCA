@@ -6,8 +6,6 @@ import { plural } from "@/lib/format";
 import { CATEGORIES, categoryLabel, getProducts, uniqueBrands } from "@/lib/products";
 import { FREE_SHIPPING_FROM, PROMO_CODE } from "@/lib/pricing";
 
-export const revalidate = 3600;
-
 const STORIES = [
   {
     kicker: "Cloth",

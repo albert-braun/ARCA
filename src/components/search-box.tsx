@@ -5,47 +5,21 @@ import Link from "next/link";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { IconSearch } from "@/components/icons";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useCatalogProducts } from "@/components/catalog-data";
 import { formatMoney } from "@/lib/format";
-import type { Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
-
-let productCache: Product[] | null = null;
-
-async function loadProducts() {
-  if (productCache) return productCache;
-  const response = await fetch("/api/products");
-  if (!response.ok) throw new Error("search failed");
-  const data = (await response.json()) as Product[];
-  productCache = data;
-  return data;
-}
 
 export function SearchBox({ autoFocus = false, onNavigate }: { autoFocus?: boolean; onNavigate?: () => void }) {
   const router = useRouter();
   const listId = useId();
   const boxRef = useRef<HTMLDivElement>(null);
+  const items = useCatalogProducts();
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState<Product[] | null>(productCache);
   const [active, setActive] = useState(0);
-  const [failed, setFailed] = useState(false);
   const debounced = useDebounce(text, 350);
   const waiting = text.trim().length >= 2 && text.trim() !== debounced.trim();
-
-  useEffect(() => {
-    if (!open || items) return;
-    let cancelled = false;
-    loadProducts()
-      .then((data) => {
-        if (!cancelled) setItems(data);
-      })
-      .catch(() => {
-        if (!cancelled) setFailed(true);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [open, items]);
+  const failed = items.length === 0;
 
   const results = useMemo(() => {
     if (!items || debounced.trim().length < 2) return [];
@@ -131,9 +105,9 @@ export function SearchBox({ autoFocus = false, onNavigate }: { autoFocus?: boole
       </form>
       {showList ? (
         <div className="absolute z-40 mt-2 w-full overflow-hidden rounded-2xl border border-line bg-card shadow-lg">
-          {waiting || (!items && !failed) ? <p className="px-4 py-3 text-sm text-muted">Searching…</p> : null}
+          {waiting ? <p className="px-4 py-3 text-sm text-muted">Searching…</p> : null}
           {failed ? <p className="px-4 py-3 text-sm text-danger">Could not load the catalog</p> : null}
-          {!waiting && items && results.length === 0 ? (
+          {!waiting && !failed && results.length === 0 ? (
             <p className="px-4 py-3 text-sm text-muted">Nothing matched. Try a brand or a category.</p>
           ) : null}
           {results.length > 0 ? (
