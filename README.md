@@ -2,7 +2,7 @@
 
 The shop is published at [albert-braun.github.io/project-1](https://albert-braun.github.io/project-1/).
 
-A storefront for a portfolio: catalog, search, cart, checkout, and an account with order history.
+A storefront: catalog, search, cart, checkout, and an account with order history.
 
 ## Stack
 
