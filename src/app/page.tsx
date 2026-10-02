@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buttonClass } from "@/components/button";
 import { ProductCard } from "@/components/product-card";
 import { plural } from "@/lib/format";
+import { publicPath } from "@/lib/asset";
 import { CATEGORIES, categoryLabel, getProducts, uniqueBrands } from "@/lib/products";
 import { FREE_SHIPPING_FROM, PROMO_CODE } from "@/lib/pricing";
 
@@ -12,7 +13,7 @@ const STORIES = [
     title: "Wool that does not shine",
     text: "Coats in this shop are cut from boiled or double-faced wool. They hold a shape on a hanger and stay quiet under street light, without a finish that reads as new for one season.",
     href: "/catalog?category=women%27s%20clothing",
-    image: "/products/camel.jpg",
+    image: publicPath("/products/camel.jpg"),
     alt: "Camel wool coat",
   },
   {
@@ -20,7 +21,7 @@ const STORIES = [
     title: "Jewelry meant to be stacked",
     text: "Chains, cuffs, and hoops are sized to sit together. Clasps lie flat, bands are narrow enough for a second ring, and nothing in the case is plated so thinly that it fades in a month.",
     href: "/catalog?category=jewelery",
-    image: "/products/chain.jpg",
+    image: publicPath("/products/chain.jpg"),
     alt: "Fine gold chain",
   },
   {
@@ -28,7 +29,7 @@ const STORIES = [
     title: "Screens and sound, kept simple",
     text: "Monitors with a cable channel, headphones with a knob you can find by touch, and a laptop that lasts a writing day. The electronics shelf is short on purpose.",
     href: "/catalog?category=electronics",
-    image: "/products/monitor.jpg",
+    image: publicPath("/products/monitor.jpg"),
     alt: "Studio monitor on a desk",
   },
 ] as const;

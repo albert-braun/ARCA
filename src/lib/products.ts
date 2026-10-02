@@ -1,5 +1,6 @@
 import fallback from "@/data/products.json";
 import { EXTRA_PRODUCTS } from "@/data/extra-products";
+import { publicPath } from "@/lib/asset";
 import type { Product, RawProduct } from "@/lib/types";
 
 const SOURCE = "https://fakestoreapi.com/products";
@@ -60,6 +61,7 @@ export function enrich(raw: RawProduct & { brand?: string }): Product {
     ...rest,
     title: rest.title.trim(),
     description: rest.description.trim(),
+    image: publicPath(rest.image),
     brand: brand ?? BRAND_BY_ID[rest.id] ?? "ARCA",
   };
 }
