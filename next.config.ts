@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import path from "node:path";
 
 const pages = process.env.GITHUB_PAGES === "true";
-const basePath = pages ? "/project-1" : "";
+const basePath = pages ? "/ARCA" : "";
 
 const nextConfig: NextConfig = {
   ...(pages ? { output: "export" as const, basePath, trailingSlash: true } : {}),

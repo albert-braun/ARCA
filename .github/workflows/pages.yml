@@ -27,7 +27,7 @@ jobs:
       - run: npm run build
         env:
           GITHUB_PAGES: "true"
-          NEXT_PUBLIC_SITE_URL: https://albert-braun.github.io/project-1
+          NEXT_PUBLIC_SITE_URL: https://albert-braun.github.io/ARCA
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

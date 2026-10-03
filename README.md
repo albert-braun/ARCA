@@ -1,6 +1,6 @@
 # ARCA
 
-The shop is published at [albert-braun.github.io/project-1](https://albert-braun.github.io/project-1/).
+The shop is published at [albert-braun.github.io/ARCA](https://albert-braun.github.io/ARCA/).
 
 A storefront: catalog, search, cart, checkout, and an account with order history.
 
